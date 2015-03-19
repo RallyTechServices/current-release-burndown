@@ -44,12 +44,13 @@ Ext.define("Rally.apps.charts.burndown.BurnDownSettings", {
             var dataTypePicker = this._buildSettingsComponent("chartdatatypepicker", "Data Type"),
                 displayPicker = this._buildSettingsComponent("chartdisplaytypepicker", "Chart Type"),
                 timeboxPicker = this._buildSettingsComponent("charttimeboxpicker", "Level"),
-                labelNameVisible = this._buildSettingsComponent("rallycheckboxfield", "Show Iteration Labels", 'showLabels');
+                labelNameVisible = this._buildSettingsComponent("rallycheckboxfield", "Show Iteration Labels", 'showLabels'),
+                useCurrentData = this._buildSettingsComponent("rallycheckboxfield", "Use Current Data", 'useCurrentArtifacts');
             
             if(this._isOnScopedDashboard()) {
-                return [dataTypePicker, displayPicker, labelNameVisible];
+                return [dataTypePicker, displayPicker, labelNameVisible,useCurrentData];
             } else {
-                return [timeboxPicker, dataTypePicker, displayPicker, labelNameVisible];
+                return [timeboxPicker, dataTypePicker, displayPicker, labelNameVisible,useCurrentData];
             }
         }
         

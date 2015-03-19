@@ -1,126 +1,3 @@
-//Ext.define('CustomApp', {
-//    extend: 'Rally.app.TimeboxScopedApp',
-//    scopeType: 'release',
-//    logger: new Rally.technicalservices.Logger(),
-//
-//    onScopeChange: function(scope) {
-//        this.logger.log('onScopeChange', scope);
-//        
-//        var filters = scope.getQueryFilter();
-//        filters = filters.or(Ext.create('Rally.data.wsapi.Filter', {
-//            property: "DirectChildrenCount",
-//            value: 0
-//        }));
-//
-//        Ext.create('Rally.data.wsapi.Store',{
-//            model: 'HierarchicalRequirement',
-//            fetch: 'ObjectID',
-//            autoLoad: true, 
-//            filters: [scope.getQueryFilter()],
-//            limit: 'Infinity',
-//            listeners: {
-//                scope: this,
-//                load: this._onReleaseArtifactsLoaded
-//            }
-//        });
-//    },
-//    _onReleaseArtifactsLoaded: function(store, records, success){
-//        this.logger.log('_onReleaseArtifactsLoaded', success, store.getTotalCount(), records);
-//        var objectIds = _.map(records, function(rec){return rec.get('ObjectID')});
-//        var chartConfig = this._getChartConfig(objectIds);
-//        chartConfig = this._addDateBoundsToCalculator(chartConfig);
-//        chartConfig.title = this._buildChartTitle();
-//        chartConfig.yAxis = this._buildYAxisConfig();
-//        this.add(chartConfig);
-//        
-//    },
-//    _getChartConfig: function(objectIds){
-//        return {
-//            xtype: "rallychart",
-//            itemId: "burndownchart",
-//
-//            aggregationErrorMessage: "No data to display. Check the data type setting for displaying data based on count versus plan estimate.",
-//
-//            storeType: "Rally.data.lookback.SnapshotStore",
-//            storeConfig: {
-//                find: {
-//                    "ObjectID": {$in: objectIds}
-//                },
-//                fetch: ["ScheduleState", "PlanEstimate", "ObjectId", "_ValidFrom", "_ValidTo"],
-//                hydrate: ["ScheduleState"],
-//                sort: {
-//                    "_ValidFrom": 1
-//                },
-//                compress: true,
-//                useHttpPost: true
-//            },
-//
-//            calculatorType: "BurnDownCalculator",
-//            calculatorConfig: {
-//                timeZone: "GMT",
-//                completedScheduleStateNames: ["Accepted", "Released"],
-//                enableProjections: true
-//            },
-//
-//            chartColors: ["#005eb8", "#8dc63f", "#666666", "#c0c0c0"],
-//
-//            chartConfig: {
-//                chart: {
-//                    zoomType: "xy"
-//                },
-//                xAxis: {
-//                    categories: [],
-//                    tickmarkPlacement: "on",
-//                    tickInterval: 7,
-//                    title: {
-//                        text: "Days",
-//                        margin: 12
-//                    },
-//                    maxPadding: 0.25,
-//                    labels: {
-//                        x: 0,
-//                        y: 20,
-//                        overflow: "justify"
-//                    }
-//                },
-////                yAxis: [],
-//                tooltip: {
-//                    formatter: function () {
-//                        var floatValue = parseFloat(this.y),
-//                            value = this.y;
-//
-//                        if (!isNaN(floatValue)) {
-//                            value = Math.floor(floatValue * 100) / 100;
-//                        }
-//
-//                        return "" + this.x + "<br />" + this.series.name + ": " + value;
-//                    }
-//                },
-//                plotOptions: {
-//                    series: {
-//                        marker: {
-//                            enabled: false,
-//                            states: {
-//                                hover: {
-//                                    enabled: true
-//                                }
-//                            }
-//                        },
-//                        connectNulls: true
-//                    },
-//                    column: {
-//                        pointPadding: 0,
-//                        borderWidth: 0,
-//                        stacking: null,
-//                        shadow: false
-//                    }
-//                }
-//            }
-//        };
-//
-//    }
-//});
-//Ext.define('Rally.apps.charts.burndown.BurnDownApp', {
 Ext.define('CustomApp', {
 extend: 'Rally.app.TimeboxScopedApp',
  logger: new Rally.technicalservices.Logger(),
@@ -158,7 +35,6 @@ extend: 'Rally.app.TimeboxScopedApp',
     scopeObject: undefined,
 
     customScheduleStates: ['Accepted'], // a reasonable default
-    useCurrentArtifacts: true, 
     config: {
         defaultSettings: {
             showLabels: true,
@@ -358,7 +234,9 @@ extend: 'Rally.app.TimeboxScopedApp',
         for (i = 0; i < this.timeboxes.length; i++) {
             oids.push(this.timeboxes[i].ObjectID);
         }
-        if (this.useCurrentArtifacts){
+        var useCurrentArtifacts = this.getSetting('useCurrentArtifacts')
+        if (useCurrentArtifacts){
+            console.log('useCurrentArtifacts',useCurrentArtifacts);
             this._fetchCurrentArtifactsForTimeboxes(type, this.timeboxes).then({
                 scope: this,
                 success: function(objectIds){
