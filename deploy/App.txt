@@ -3,11 +3,11 @@
 <head>
     <title>Current Data Release Burndown</title>
     <!--  (c) 2014 Rally Software Development Corp.  All Rights Reserved. -->
-    <!--  Build Date: Thu Mar 19 2015 15:47:39 GMT-0600 (MDT) -->
+    <!--  Build Date: Thu Mar 19 2015 15:55:51 GMT-0600 (MDT) -->
     
     <script type="text/javascript">
-        var APP_BUILD_DATE = "Thu Mar 19 2015 15:47:39 GMT-0600 (MDT)";
-        var CHECKSUM = 78880129901;
+        var APP_BUILD_DATE = "Thu Mar 19 2015 15:55:51 GMT-0600 (MDT)";
+        var CHECKSUM = 78880127052;
     </script>
     
     <script type="text/javascript" src="/apps/2.0rc3/sdk.js"></script>
